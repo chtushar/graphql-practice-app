@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 4000;
 mongoose.connect("mongodb://127.0.0.1:27017/gql-app", {
   useNewUrlParser: true,
   useCreateIndex: true,
+  useUnifiedTopology: true,
 });
 mongoose.connection.once("open", () => {
   console.log("Connected to database");
