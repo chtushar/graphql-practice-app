@@ -1,39 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
-
-const GET_AUTHORS = gql`
-  {
-    authors {
-      name
-      id
-    }
-  }
-`;
+import { GET_AUTHORS, ADD_BOOK_MUTATION } from "../queries/queries";
 
 const AddBook = () => {
-  const { loading, error, data } = useQuery(GET_AUTHORS);
+  const { loading, data } = useQuery(GET_AUTHORS);
+  const [name, setName] = useState("");
+  const [genre, setGenre] = useState("");
+  const [authorId, setAuthorId] = useState("");
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
+  function displayAuthors() {
+    if (loading) {
+      return <option disabled>Loading Authors...</option>;
+    } else {
+      return data.authors.map(({ name, id }) => (
+        <option key={id} value={id}>
+          {name}
+        </option>
+      ));
+    }
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+    console.log({ name, genre, authorId });
+  }
 
   return (
-    <form id="add-book">
+    <form id="add-book" onSubmit={submitForm}>
       <div className="field">
         <label>Book Name: </label>
-        <input type="text" />
+        <input type="text" onChange={(e) => setName(e.target.value)} />
       </div>
       <div className="field">
         <label>Genre: </label>
-        <input type="text" />
+        <input type="text" onChange={(e) => setGenre(e.target.value)} />
       </div>
       <div className="field">
         <label>Author: </label>
-        <select>
-          <option>Select author...</option>
-          {data.authors.map(({ name, id }) => (
-            <option key={id}>{name}</option>
-          ))}
+        <select onChange={(e) => setAuthorId(e.target.value)}>
+          <option>Select Authors...</option>
+          {displayAuthors()}
         </select>
         <button type="submit">+</button>
       </div>
