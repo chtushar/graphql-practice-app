@@ -1,15 +1,26 @@
-import React, { Component } from "react";
+import React from "react";
+import { useQuery } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 
-class BookList extends Component {
-  render() {
-    return (
-      <div>
-        <ul id="book-list">
-          <li>Book Name</li>
-        </ul>
-      </div>
-    );
+const BOOKS = gql`
+  {
+    books {
+      name
+      id
+    }
   }
-}
+`;
+
+const BookList = () => {
+  const { data } = useQuery(BOOKS);
+  console.log(data);
+  return (
+    <div>
+      <ul id="book-list">
+        <li>Book Name</li>
+      </ul>
+    </div>
+  );
+};
 
 export default BookList;
