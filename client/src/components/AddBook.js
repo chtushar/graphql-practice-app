@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { GET_AUTHORS, ADD_BOOK_MUTATION } from "../queries/queries";
 
 const AddBook = () => {
-  const { loading, data } = useQuery(GET_AUTHORS);
+  //state
   const [name, setName] = useState("");
   const [genre, setGenre] = useState("");
   const [authorId, setAuthorId] = useState("");
 
+  //graphql hooks
+  const { loading, data } = useQuery(GET_AUTHORS);
+  const [addBook, { error }] = useMutation(ADD_BOOK_MUTATION, {
+    variables: { name, genre, authorId },
+    refetchQueries: ["BOOKS"],
+  });
+
+  //functions
   function displayAuthors() {
     if (loading) {
       return <option disabled>Loading Authors...</option>;
@@ -22,7 +30,10 @@ const AddBook = () => {
 
   function submitForm(e) {
     e.preventDefault();
-    console.log({ name, genre, authorId });
+    addBook();
+    // setName("");
+    // setGenre("");
+    // setAuthorId("");
   }
 
   return (
