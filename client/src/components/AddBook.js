@@ -10,7 +10,7 @@ const AddBook = () => {
 
   //graphql hooks
   const { loading, data } = useQuery(GET_AUTHORS);
-  const [addBook, { error }] = useMutation(ADD_BOOK_MUTATION, {
+  const [addBook] = useMutation(ADD_BOOK_MUTATION, {
     variables: { name, genre, authorId },
     refetchQueries: [{ query: BOOKS }],
   });

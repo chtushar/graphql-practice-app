@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ApolloClient, HttpLink, InMemoryCache } from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
@@ -15,13 +15,15 @@ const client = new ApolloClient({
 });
 
 function App() {
+  let [selected, setSelected] = useState("");
+
   return (
     <ApolloProvider client={client}>
       <div id="main">
         <h1>Reading List</h1>
-        <BookList />
+        <BookList setSelected={setSelected} />
         <AddBook />
-        <BookDetails />
+        <BookDetails selected={selected} />
       </div>
     </ApolloProvider>
   );

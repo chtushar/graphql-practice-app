@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { BOOKS } from "../queries/queries";
 
-const BookList = () => {
+const BookList = ({ setSelected }) => {
   const { loading, error, data } = useQuery(BOOKS);
 
   if (loading) return <p>Loading...</p>;
@@ -12,7 +12,9 @@ const BookList = () => {
     <div>
       <ul id="book-list">
         {data.books.map(({ name, id }) => (
-          <li key={id}>{name}</li>
+          <li key={id} onClick={() => setSelected(id)}>
+            {name}
+          </li>
         ))}
       </ul>
     </div>
